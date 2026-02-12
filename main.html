@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>photo valentine · yes? ❤️</title>
+    <title>will you be my valentine? ✨</title>
     <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
@@ -22,6 +22,30 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+        }
+
+        .page {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        #page1 {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #page2 {
+            opacity: 0;
+            visibility: hidden;
+            background: radial-gradient(circle at 50% 50%, #ffeef0, #ffdce4);
         }
 
         .photo-card {
@@ -58,10 +82,6 @@
                         0 0 0 10px #ffd9e2;
             transition: transform 0.25s ease;
             display: block;
-        }
-
-        .couple-image:hover {
-            transform: scale(1.02);
         }
 
         .greeting {
@@ -166,11 +186,71 @@
             100% { opacity: 0.9; transform: scale(1.2); }
         }
 
+        .celebration-card {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 3.5rem 4rem;
+            border-radius: 80px 30px 80px 30px;
+            box-shadow: 0 40px 60px rgba(220, 100, 130, 0.4);
+            border: 3px solid white;
+            animation: float 3s infinite ease-in-out;
+            max-width: 800px;
+        }
+
+        .yay-text {
+            font-size: 7rem;
+            font-weight: 800;
+            color: #ff4d6d;
+            text-shadow: 8px 8px 0 #ffe6ea, 12px 12px 20px rgba(255, 80, 120, 0.3);
+            letter-spacing: 8px;
+            margin-bottom: 1.5rem;
+            line-height: 1.1;
+        }
+
+        .heart-explosion {
+            font-size: 5rem;
+            margin: 1.5rem 0;
+            animation: heartbeat 1.2s infinite;
+        }
+
+        @keyframes heartbeat {
+            0% { transform: scale(1); }
+            30% { transform: scale(1.4); }
+            50% { transform: scale(1.2); }
+            70% { transform: scale(1.4); }
+            100% { transform: scale(1); }
+        }
+
+        .love-message {
+            font-size: 2.2rem;
+            color: #a13e4a;
+            font-weight: 600;
+            margin-top: 1.2rem;
+            background: rgba(255, 255, 255, 0.6);
+            padding: 0.8rem 1.8rem;
+            border-radius: 60px;
+            display: inline-block;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10000;
+        }
+
         @media (max-width: 550px) {
             .photo-card { padding: 1.8rem; }
             .couple-image { width: 220px; height: 220px; }
             .greeting { font-size: 1.9rem; }
             .btn { font-size: 1.6rem; padding: 0.7rem 1.8rem; }
+            .yay-text { font-size: 4.5rem; }
+            .celebration-card { padding: 2rem; }
         }
     </style>
 </head>
@@ -183,45 +263,57 @@
     <div class="sparkle" style="top: 45%; left: 78%;">✨</div>
     <div class="sparkle" style="top: 62%; left: 38%;">💗</div>
 
-    <div class="photo-card">
+    <div id="page1" class="page">
+        <div class="photo-card">
+            <div class="photo-frame">
+                <img class="couple-image" src="IMG_9980.jpeg" alt="us" id="couplePhoto">
+            </div>
 
-        <div class="photo-frame">
-            <img class="couple-image" src="IMG_9980.jpeg" alt="us" id="couplePhoto">
-        </div>
-
-        <div class="greeting">
+            <div class="greeting">
             Aromie 🥺
-        </div>
+            </div>
 
-        <div class="question-big">
-            will you be my valentine?
-        </div>
+            <div class="question-big">
+                will you be my valentine?
+            </div>
 
-        <div class="button-pair">
-            <button class="btn btn-yes" id="yesBtn">
-                YES ❤️
-            </button>
-            <button class="btn btn-no" id="noBtn">
-                no 💔
-            </button>
-        </div>
+            <div class="button-pair">
+                <button class="btn btn-yes" id="yesBtn">
+                    YES ❤️
+                </button>
+                <button class="btn btn-no" id="noBtn">
+                    no 💔
+                </button>
+            </div>
 
-        <div class="tiny-message" id="messageBox">
-            ✨ the "no" button runs away… try click! ✨
+            <div class="tiny-message" id="messageBox">
+                ✨ the "no" button runs away… try click! ✨
+            </div>
         </div>
-
     </div>
 
-    <div style="position: absolute; pointer-events: none;"></div>
+    <div id="page2" class="page">
+        <div class="celebration-card">
+            <div class="yay-text">YAY!</div>
+            <div class="heart-explosion">❤️❤️❤️</div>
+            <div class="love-message" id="celebrationMessage">you said yes! 🎉</div>
+        </div>
+    </div>
+
+    <canvas id="confetti-canvas"></canvas>
 
     <script>
         (function() {
+            const page1 = document.getElementById('page1');
+            const page2 = document.getElementById('page2');
             const noBtn = document.getElementById('noBtn');
             const yesBtn = document.getElementById('yesBtn');
             const msgBox = document.getElementById('messageBox');
             const photo = document.getElementById('couplePhoto');
+            const celebrationMsg = document.getElementById('celebrationMessage');
 
             let teleportCount = 0;
+            let confettiInterval = null;
 
             noBtn.style.transition = 'all 0.2s cubic-bezier(0.3, 0.9, 0.5, 1.2)';
 
@@ -269,56 +361,91 @@
                 setTimeout(() => { yesBtn.style.transform = 'scale(1)'; }, 220);
             });
 
+            function startConfetti() {
+                const canvas = document.getElementById('confetti-canvas');
+                const ctx = canvas.getContext('2d');
+                
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+
+                const confettiParticles = [];
+                const colors = ['#ff6b7b', '#ff8a9c', '#ffb3c6', '#ffc2d1', '#fb6f92', '#ff99ac', '#ff4d6d', '#ffb5c0'];
+
+                for (let i = 0; i < 180; i++) {
+                    confettiParticles.push({
+                        x: Math.random() * canvas.width,
+                        y: Math.random() * canvas.height * 0.2,
+                        size: Math.random() * 10 + 5,
+                        speedY: Math.random() * 5 + 3,
+                        speedX: Math.random() * 3 - 1.5,
+                        color: colors[Math.floor(Math.random() * colors.length)],
+                        rotation: Math.random() * 360,
+                        rotationSpeed: (Math.random() - 0.5) * 0.8
+                    });
+                }
+
+                function drawConfetti() {
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    for (let i = 0; i < confettiParticles.length; i++) {
+                        const p = confettiParticles[i];
+                        
+                        ctx.save();
+                        ctx.translate(p.x, p.y);
+                        ctx.rotate(p.rotation * Math.PI / 180);
+                        ctx.fillStyle = p.color;
+                        ctx.fillRect(-p.size/2, -p.size/2, p.size, p.size * 0.6);
+                        ctx.restore();
+                        
+                        p.y += p.speedY * 0.4;
+                        p.x += p.speedX * 0.3;
+                        p.rotation += p.rotationSpeed;
+                        
+                        if (p.y > canvas.height) {
+                            p.y = -20;
+                            p.x = Math.random() * canvas.width;
+                        }
+                        if (p.x > canvas.width + 20) p.x = -20;
+                        if (p.x < -20) p.x = canvas.width + 20;
+                    }
+                    
+                    confettiInterval = requestAnimationFrame(drawConfetti);
+                }
+                
+                drawConfetti();
+            }
+
+            function stopConfetti() {
+                if (confettiInterval) {
+                    cancelAnimationFrame(confettiInterval);
+                    confettiInterval = null;
+                }
+                const canvas = document.getElementById('confetti-canvas');
+                const ctx = canvas.getContext('2d');
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            }
+
+            function switchToPage2() {
+                page1.style.opacity = '0';
+                page1.style.visibility = 'hidden';
+                page2.style.opacity = '1';
+                page2.style.visibility = 'visible';
+                
+                const now = new Date();
+                const hour = now.getHours();
+                let timeGreeting = '';
+                if (hour < 12) timeGreeting = 'happy';
+                else if (hour < 18) timeGreeting = 'happy';
+                else timeGreeting = 'happy';
+                
+                celebrationMsg.innerHTML = `${timeGreeting} valentine! 💕`;
+                
+                startConfetti();
+            }
+
             yesBtn.addEventListener('click', function(e) {
                 e.preventDefault();
-
-                msgBox.innerHTML = ' happy valentine!! ';
-                
-                yesBtn.innerHTML = 'YES!! 💕💕';
-                
-                noBtn.style.position = 'fixed';
-                noBtn.style.left = '24px';
-                noBtn.style.bottom = '24px';
-                noBtn.style.top = 'auto';
-                noBtn.style.right = 'auto';
-                noBtn.style.backgroundColor = '#ffe0e5';
-                noBtn.style.color = '#7a4c54';
-                noBtn.style.borderBottomColor = '#b48a92';
-                noBtn.style.boxShadow = '0 6px 0 #b48a92';
-                noBtn.innerHTML = 'okay yes 💖'; 
-                noBtn.style.fontSize = '1.5rem';
-                noBtn.style.padding = '0.6rem 1.8rem';
-                
-                yesBtn.disabled = true;
-                yesBtn.style.opacity = '0.95';
-                yesBtn.style.cursor = 'default';
-                yesBtn.style.transform = 'scale(1.05)';
-                yesBtn.style.borderBottomWidth = '5px';
-
-                const lovePopup = document.createElement('div');
-                lovePopup.innerText = ' YAYYYY ';
-                lovePopup.style.position = 'fixed';
-                lovePopup.style.top = '50%';
-                lovePopup.style.left = '50%';
-                lovePopup.style.transform = 'translate(-50%, -50%)';
-                lovePopup.style.background = 'white';
-                lovePopup.style.padding = '1.8rem 2.6rem';
-                lovePopup.style.borderRadius = '100px';
-                lovePopup.style.fontSize = '2.4rem';
-                lovePopup.style.fontWeight = 'bold';
-                lovePopup.style.color = '#c1324a';
-                lovePopup.style.boxShadow = '0 25px 45px rgba(220, 60, 100, 0.4)';
-                lovePopup.style.zIndex = '10001';
-                lovePopup.style.border = '8px solid #ffb8c9';
-                lovePopup.style.backdropFilter = 'blur(8px)';
-                lovePopup.style.letterSpacing = '4px';
-                document.body.appendChild(lovePopup);
-                
-                setTimeout(() => {
-                    lovePopup.style.transition = 'opacity 0.7s';
-                    lovePopup.style.opacity = '0';
-                    setTimeout(() => lovePopup.remove(), 800);
-                }, 3000);
+                switchToPage2();
             });
 
             window.addEventListener('resize', function() {
@@ -340,6 +467,12 @@
                     
                     noBtn.style.left = left + 'px';
                     noBtn.style.top = top + 'px';
+                }
+
+                if (page2.style.visibility === 'visible') {
+                    const canvas = document.getElementById('confetti-canvas');
+                    canvas.width = window.innerWidth;
+                    canvas.height = window.innerHeight;
                 }
             });
 
@@ -367,7 +500,7 @@
     </script>
 
     <script>
-        console.log('❤️ photocard valentine — replace your-couple-photo.jpg ❤️');
+        console.log('❤️ say YES for confetti explosion! ❤️');
     </script>
 
 </body>

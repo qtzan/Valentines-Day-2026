@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>photo valentine · yes? ❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(145deg, #ffe6ef 0%, #ffdae2 100%);
+            font-family: 'Quicksand', sans-serif;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        .photo-card {
+            max-width: 900px;
+            width: 100%;
+            background: rgba(255, 250, 245, 0.75);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 48px 24px 48px 24px;
+            box-shadow: 0 30px 45px rgba(200, 80, 100, 0.25),
+                        0 0 0 2px rgba(255, 245, 240, 0.7);
+            padding: 2.5rem 2.5rem 3rem;
+            border: 1px solid rgba(255, 220, 230, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-frame {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 1.8rem;
+        }
+
+        .couple-image {
+            width: 280px;
+            height: 280px;
+            border-radius: 40px 16px 40px 16px;
+            object-fit: cover;
+            box-shadow: 0 25px 35px -8px rgba(190, 70, 90, 0.4),
+                        0 0 0 6px white,
+                        0 0 0 10px #ffd9e2;
+            transition: transform 0.25s ease;
+            display: block;
+        }
+
+        .couple-image:hover {
+            transform: scale(1.02);
+        }
+
+        .greeting {
+            font-size: 2.4rem;
+            font-weight: 700;
+            color: #882d3a;
+            text-shadow: 2px 2px 0 #ffe7ec;
+            letter-spacing: -0.5px;
+            margin-bottom: 0.5rem;
+            line-height: 1.2;
+            text-align: center;
+        }
+
+        .question-big {
+            font-size: 2rem;
+            font-weight: 600;
+            color: #4f2d32;
+            background: rgba(255, 255, 250, 0.7);
+            padding: 0.4rem 1.8rem;
+            border-radius: 60px;
+            display: inline-block;
+            backdrop-filter: blur(4px);
+            margin-bottom: 2rem;
+            border: 2px dashed #ffa5b4;
+            box-shadow: 0 4px 10px rgba(255, 160, 170, 0.3);
+        }
+
+        .button-pair {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 2.8rem;
+            flex-wrap: wrap;
+            margin: 0.8rem 0 1.2rem;
+        }
+
+        .btn {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            padding: 0.9rem 2.8rem;
+            border: none;
+            border-radius: 120px;
+            letter-spacing: 1.8px;
+            transition: all 0.2s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+            box-shadow: 0 12px 0 rgba(0, 0, 0, 0.08), 0 12px 25px rgba(230, 80, 110, 0.35);
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            border: 2px solid rgba(255,255,255,0.8);
+        }
+
+        .btn-yes {
+            background: #ff859b;
+            color: white;
+            text-shadow: 3px 3px 0 #b34b5a;
+            border-bottom: 8px solid #b34b5a;
+        }
+
+        .btn-yes:hover {
+            background: #ffa0b2;
+            transform: scale(1.08);
+            border-bottom-width: 6px;
+        }
+
+        .btn-no {
+            background: #b7b7c9;
+            color: #26262f;
+            text-shadow: 1px 1px 0 #eaeaf2;
+            border-bottom: 8px solid #72728a;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .tiny-message {
+            margin-top: 2.2rem;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #9f4b56;
+            background: rgba(255, 240, 240, 0.7);
+            padding: 0.7rem 1.8rem;
+            border-radius: 50px;
+            backdrop-filter: blur(4px);
+            border: 1px solid #ffc1cc;
+            text-align: center;
+            max-width: 90%;
+        }
+
+        .sparkle {
+            position: absolute;
+            font-size: 2.2rem;
+            user-select: none;
+            pointer-events: none;
+            opacity: 0.4;
+            animation: twinkle 3s infinite alternate;
+        }
+
+        @keyframes twinkle {
+            0% { opacity: 0.2; transform: scale(0.9); }
+            100% { opacity: 0.9; transform: scale(1.2); }
+        }
+
+        @media (max-width: 550px) {
+            .photo-card { padding: 1.8rem; }
+            .couple-image { width: 220px; height: 220px; }
+            .greeting { font-size: 1.9rem; }
+            .btn { font-size: 1.6rem; padding: 0.7rem 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="sparkle" style="top: 8%; left: 6%;">✨</div>
+    <div class="sparkle" style="top: 84%; left: 91%; animation-delay: 0.5s;">🌸</div>
+    <div class="sparkle" style="top: 15%; left: 88%;">💖</div>
+    <div class="sparkle" style="top: 77%; left: 12%; animation-delay: 0.9s;">💘</div>
+    <div class="sparkle" style="top: 45%; left: 78%;">✨</div>
+    <div class="sparkle" style="top: 62%; left: 38%;">💗</div>
+
+    <div class="photo-card">
+
+        <div class="photo-frame">
+            <img class="couple-image" src="IMG_9980.jpeg" alt="us" id="couplePhoto">
+        </div>
+
+        <div class="greeting">
+            Aromie 🥺
+        </div>
+
+        <div class="question-big">
+            will you be my valentine?
+        </div>
+
+        <div class="button-pair">
+            <button class="btn btn-yes" id="yesBtn">
+                YES ❤️
+            </button>
+            <button class="btn btn-no" id="noBtn">
+                no 💔
+            </button>
+        </div>
+
+        <div class="tiny-message" id="messageBox">
+            ✨ the "no" button runs away… try click! ✨
+        </div>
+
+    </div>
+
+    <div style="position: absolute; pointer-events: none;"></div>
+
+    <script>
+        (function() {
+            const noBtn = document.getElementById('noBtn');
+            const yesBtn = document.getElementById('yesBtn');
+            const msgBox = document.getElementById('messageBox');
+            const photo = document.getElementById('couplePhoto');
+
+            let teleportCount = 0;
+
+            noBtn.style.transition = 'all 0.2s cubic-bezier(0.3, 0.9, 0.5, 1.2)';
+
+            function teleportNoButton() {
+                noBtn.style.position = 'fixed';
+                
+                const winWidth = window.innerWidth;
+                const winHeight = window.innerHeight;
+                const btnWidth = noBtn.offsetWidth;
+                const btnHeight = noBtn.offsetHeight;
+
+                let maxLeft = winWidth - btnWidth - 12;
+                let maxTop = winHeight - btnHeight - 12;
+                maxLeft = Math.max(maxLeft, 12);
+                maxTop = Math.max(maxTop, 12);
+
+                const randomLeft = Math.floor(Math.random() * maxLeft);
+                const randomTop = Math.floor(Math.random() * maxTop);
+
+                noBtn.style.left = randomLeft + 'px';
+                noBtn.style.top = randomTop + 'px';
+                noBtn.style.zIndex = 9999;
+
+                teleportCount++;
+
+                if (teleportCount === 1) {
+                    msgBox.innerHTML = '🦋 too slow! the "no" escaped again!';
+                } else if (teleportCount === 2) {
+                    msgBox.innerHTML = '🏃💨 this button is quick!!';
+                } else if (teleportCount === 3) {
+                    msgBox.innerHTML = '🥺 just click YES already…';
+                } else if (teleportCount === 4) {
+                    msgBox.innerHTML = '💞 it’s fate — no is not an option';
+                } else if (teleportCount >= 5) {
+                    msgBox.innerHTML = '✨ you can never catch it. say yes? ✨';
+                }
+            }
+
+            noBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                teleportNoButton();
+
+                yesBtn.style.transform = 'scale(1.12)';
+                setTimeout(() => { yesBtn.style.transform = 'scale(1)'; }, 220);
+            });
+
+            yesBtn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                msgBox.innerHTML = ' happy valentine!! ';
+                
+                yesBtn.innerHTML = 'YES!! 💕💕';
+                
+                noBtn.style.position = 'fixed';
+                noBtn.style.left = '24px';
+                noBtn.style.bottom = '24px';
+                noBtn.style.top = 'auto';
+                noBtn.style.right = 'auto';
+                noBtn.style.backgroundColor = '#ffe0e5';
+                noBtn.style.color = '#7a4c54';
+                noBtn.style.borderBottomColor = '#b48a92';
+                noBtn.style.boxShadow = '0 6px 0 #b48a92';
+                noBtn.innerHTML = 'okay yes 💖'; 
+                noBtn.style.fontSize = '1.5rem';
+                noBtn.style.padding = '0.6rem 1.8rem';
+                
+                yesBtn.disabled = true;
+                yesBtn.style.opacity = '0.95';
+                yesBtn.style.cursor = 'default';
+                yesBtn.style.transform = 'scale(1.05)';
+                yesBtn.style.borderBottomWidth = '5px';
+
+                const lovePopup = document.createElement('div');
+                lovePopup.innerText = ' YAYYYY ';
+                lovePopup.style.position = 'fixed';
+                lovePopup.style.top = '50%';
+                lovePopup.style.left = '50%';
+                lovePopup.style.transform = 'translate(-50%, -50%)';
+                lovePopup.style.background = 'white';
+                lovePopup.style.padding = '1.8rem 2.6rem';
+                lovePopup.style.borderRadius = '100px';
+                lovePopup.style.fontSize = '2.4rem';
+                lovePopup.style.fontWeight = 'bold';
+                lovePopup.style.color = '#c1324a';
+                lovePopup.style.boxShadow = '0 25px 45px rgba(220, 60, 100, 0.4)';
+                lovePopup.style.zIndex = '10001';
+                lovePopup.style.border = '8px solid #ffb8c9';
+                lovePopup.style.backdropFilter = 'blur(8px)';
+                lovePopup.style.letterSpacing = '4px';
+                document.body.appendChild(lovePopup);
+                
+                setTimeout(() => {
+                    lovePopup.style.transition = 'opacity 0.7s';
+                    lovePopup.style.opacity = '0';
+                    setTimeout(() => lovePopup.remove(), 800);
+                }, 3000);
+            });
+
+            window.addEventListener('resize', function() {
+                if (noBtn.style.position === 'fixed') {
+                    const winWidth = window.innerWidth;
+                    const winHeight = window.innerHeight;
+                    const btnWidth = noBtn.offsetWidth;
+                    const btnHeight = noBtn.offsetHeight;
+                    
+                    let left = parseFloat(noBtn.style.left);
+                    let top = parseFloat(noBtn.style.top);
+                    
+                    if (isNaN(left) || left + btnWidth > winWidth - 15 || left < 15) {
+                        left = Math.min(Math.max(left || 25, 15), winWidth - btnWidth - 15);
+                    }
+                    if (isNaN(top) || top + btnHeight > winHeight - 15 || top < 15) {
+                        top = Math.min(Math.max(top || 25, 15), winHeight - btnHeight - 15);
+                    }
+                    
+                    noBtn.style.left = left + 'px';
+                    noBtn.style.top = top + 'px';
+                }
+            });
+
+            if (photo) {
+                photo.onerror = function() {
+                    photo.style.display = 'none';
+                    const fallbackDiv = document.createElement('div');
+                    fallbackDiv.innerText = '💑 your photo here 💑';
+                    fallbackDiv.style.width = '280px';
+                    fallbackDiv.style.height = '280px';
+                    fallbackDiv.style.background = '#ffd9e2';
+                    fallbackDiv.style.borderRadius = '40px 16px';
+                    fallbackDiv.style.display = 'flex';
+                    fallbackDiv.style.alignItems = 'center';
+                    fallbackDiv.style.justifyContent = 'center';
+                    fallbackDiv.style.fontSize = '1.8rem';
+                    fallbackDiv.style.fontWeight = 'bold';
+                    fallbackDiv.style.color = '#a13e4a';
+                    fallbackDiv.style.border = '8px solid white';
+                    fallbackDiv.style.boxShadow = '0 20px 30px rgba(200,100,120,0.4)';
+                    document.querySelector('.photo-frame').appendChild(fallbackDiv);
+                };
+            }
+        })();
+    </script>
+
+    <script>
+        console.log('❤️ photocard valentine — replace your-couple-photo.jpg ❤️');
+    </script>
+
+</body>
+</html>
